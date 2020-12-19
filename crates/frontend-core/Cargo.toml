@@ -1,0 +1,17 @@
+[package]
+name = "frontend-core"
+version = "0.1.0"
+authors = ["Schr3da <strieder.georg@gmail.com>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+specs = "0.16.1"
+specs-derive = "0.4.1"
+bracket-geometry = "0.8.1"
+bracket-pathfinding = "0.8.1"
+bracket-algorithm-traits = "0.8.1"
+communication-core = { path = "../communication-core" }
+common-core = { path = "../common-core" }

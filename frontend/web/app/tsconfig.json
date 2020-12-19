@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "target": "ES2018",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "types": [
+      "babylonjs",
+      "babylonjs-loaders"
+    ],
+    "sourceMap": true,
+    "jsx": "react",
+    "allowJs": true,
+    "lib": ["dom", "ES2018"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}

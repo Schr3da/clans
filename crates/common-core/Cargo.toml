@@ -1,0 +1,20 @@
+[package]
+name = "common-core"
+version = "0.1.0"
+authors = ["Schr3da <strieder.georg@gmail.com>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+specs = "0.16.1"
+specs-derive = "0.4.1"
+rust-hsluv = "0.1.4"
+chrono = "0.4.19"
+uuid = { version = "0.8", features = ["v4", "wasm-bindgen"] }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+wasm-bindgen = "0.2.68"
+js-sys = "0.3.45"
+web-sys = { version = "0.3.45", features = ['console'] }

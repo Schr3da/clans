@@ -1,0 +1,11 @@
+{
+  "name": "wasm-business-module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "wasm-pack build --out-dir dist --out-name index --target web"
+  },
+  "author": "",
+  "license": "ISC"
+}

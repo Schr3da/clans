@@ -1,0 +1,7 @@
+[workspace]
+members = [
+  "common-core",
+  "communication-core",
+  "frontend-core",
+  "backend-core",
+]
