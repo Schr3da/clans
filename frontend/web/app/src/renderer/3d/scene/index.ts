@@ -21,14 +21,14 @@ export class GameScene {
   constructor(canvasRef: HTMLCanvasElement, controlsRef: ControlsManager) {
     this.canvasRef = canvasRef;
     this.controlsRef = controlsRef;
-    
+
     this.engine = new BABYLON.Engine(this.canvasRef, true); 
     
     this.self = new BABYLON.Scene(this.engine);
     this.self.shadowsEnabled = false;
     this.self.clearColor = new BABYLON.Color4(0.45, 0.77, 0.99, 1); 
 
-    this.camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 3, new BABYLON.Vector3(40, 0, 40), this.self);
+    this.camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2, 10, new BABYLON.Vector3(0, 0, 0), this.self);
     this.camera.attachControl(canvasRef, true);
 
     new BABYLON.HemisphericLight("default_light", new BABYLON.Vector3(1, 1, 0), this.self);

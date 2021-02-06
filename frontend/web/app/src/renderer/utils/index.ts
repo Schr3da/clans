@@ -4,8 +4,8 @@ export const defaultMapSize = (
 ): {
   width: number, height: number
 }  => {
-  const rows = 20;
-  const columns = 40;
+  const rows = 100;
+  const columns = 100;
 
   return {
     width: columns * tileWidth,

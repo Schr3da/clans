@@ -27,6 +27,7 @@ export class ActionMenu extends React.Component<unknown, unknown>{
         <button onClick={() => this.handlePreview(ControlActionTypes.ON_SHOW_PREVIEW_FACTORY)}>Factory</button> 
         <button onClick={() => this.handlePreview(ControlActionTypes.ON_SHOW_PREVIEW_MINE)}>Mine</button> 
         <button onClick={() => this.handlePreview(ControlActionTypes.ON_SHOW_PREVIEW_FARM)}>Farm</button> 
+        <button onClick={() => this.handlePreview(ControlActionTypes.ON_INIT_PATH)}>Path</button> 
       </div>
     );
   }

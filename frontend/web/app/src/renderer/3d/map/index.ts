@@ -1,45 +1,33 @@
-import {Mesh, Vector3} from "babylonjs";
+import * as BABYLON from "babylonjs";
 
 import type {RenderItemDto} from "../../../../pkg";
 
 import {BaseRenderer} from "../base-renderer";
-import {AssetManager} from "../manager";
-import {meshAssetGuard} from "../utils";
 
 export class MapRenderer extends BaseRenderer{
   
-  private getMesh(glyph: String): Mesh {
-    let name = "";
-    
-    switch (glyph) {
-      case "#":
-        name = "tree.babylon";
-        break;
-      case ".":
-        name = "ground_plain.babylon";
-        break;
-      default: 
-        name = "ground_plain.babylon"; 
-    }
-
-    let asset = meshAssetGuard(this.managerRef, name); 
-    return asset.data; 
-  }
-
   public async setup(): Promise<void>{
-    await this.managerRef.getMeshByFilenames(["untitled.babylon", "tree.babylon", "ground_plain.babylon"]);
+    
+    const options = {
+      width: 2048,
+      height: 2048,
+    };
+
+    const mesh = BABYLON.MeshBuilder.CreatePlane("ground", options, this.sceneRef);
+    mesh.rotateAround(new BABYLON.Vector3(0, 0, 0), new BABYLON.Vector3(1, 0, 0), BABYLON.Tools.ToRadians(0));
+
+    const material = new BABYLON.StandardMaterial("myMaterial", this.sceneRef);
+    material.diffuseColor = BABYLON.Color3.FromHexString("#F9F7EB");
+    material.specularColor = BABYLON.Color3.FromHexString("#F9F7EB");
+    material.emissiveColor = BABYLON.Color3.FromHexString("#F9F7EB");
+    material.ambientColor = BABYLON.Color3.FromHexString("#F9F7EB");
+    
+    mesh.material = material;
+
     super.setup();
   }
-
-  protected renderImpl(id: string, item: RenderItemDto, _isVisible: boolean) {
-    let match = this.sceneRef.getMeshByName(id);
-
-    if (match == null) {
-      let child = this.getMesh(item.glyph).createInstance(id); 
-      child.position = new Vector3(item.x * AssetManager.defaultSize, 0, item.y * AssetManager.defaultSize);
-      return;
-    }
   
-    match.isVisible = true;
+  protected renderImpl(_id: string, _item: RenderItemDto, _isVisible: boolean) {
+
   }
 }

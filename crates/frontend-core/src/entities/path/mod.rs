@@ -128,6 +128,8 @@ impl PathRenderer {
         self.end.x = x;
         self.end.y = y;
 
+        common_core::utils::log::print_str(&"update move");
+
         self.force_update(self.end.x != x && self.end.y != y);
     }
 

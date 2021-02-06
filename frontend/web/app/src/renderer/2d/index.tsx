@@ -45,9 +45,13 @@ export class Renderer2D extends React.PureComponent<IProps, IState> {
 
   private tiles: RendererCollectionData; 
 
+  private debounceMouseMove: any;
+
   constructor(props: IProps) {
     super(props);
-    
+
+    this.debounceMouseMove = null;
+
     this.tiles = new Map();
     this.tiles.set(RenderDataKeys.map, new Map());
     this.tiles.set(RenderDataKeys.buildings, new Map());
@@ -72,6 +76,30 @@ export class Renderer2D extends React.PureComponent<IProps, IState> {
     }
     
     return collection;
+  }
+  
+  private getColumnHeight = () =>
+    Column2d.width + Column2d.padding * 2;
+
+  private getRowHeight = () =>
+    Column2d.height + Column2d.padding * 2
+
+  private handleClick = (x: number, y: number) => {
+    this.props.controls.setLeftMouseButtonUpEvent(x, y);
+  }
+  
+  private handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    clearTimeout(this.debounceMouseMove);
+    this.debounceMouseMove = setTimeout(() => {
+      const x = Math.floor(event.clientX / this.getColumnHeight());
+      const y = Math.floor(event.clientY / this.getRowHeight());
+      this.props.controls.setMouseMoveEvent(x, y);
+    }, 100);
+  }
+
+  public componentWillUnmount() {
+    clearTimeout(this.debounceMouseMove);
+    this.debounceMouseMove = null;
   }
 
   public handleMapData(_: string, item: RenderItemDto, isVisible: boolean) {
@@ -229,18 +257,14 @@ export class Renderer2D extends React.PureComponent<IProps, IState> {
     }));
   }
 
-  private handleClick = (x: number, y: number) => {
-    this.props.controls.setLeftMouseButtonUpEvent(x, y);
-  }
-
   public render(): JSX.Element {
     const {columns, rows} = this.state;
-    const containerWidth = columns * (Column2d.width + Column2d.padding * 2);
-    const containerHeight = rows * (Column2d.height + Column2d.padding * 2);
-    const columnHeight = Column2d.height + Column2d.padding * 2;
+    const columnHeight = this.getRowHeight();
+    const containerWidth = columns * this.getColumnHeight();
+    const containerHeight = rows * this.getRowHeight();
 
     return (
-      <div className="renderer-2d">
+      <div className="renderer-2d" onMouseMove={this.handleMouseMove}>
         <div className="wrapper" style={{width: containerWidth, height: containerHeight}}>
           {this.state.tiles.map((rows, id) =>
             <div key={id} className="grid-row-2d" style={{height: columnHeight}}>

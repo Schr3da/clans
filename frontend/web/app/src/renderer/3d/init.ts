@@ -5,7 +5,6 @@ import {MapRenderer} from "./map";
 import {PreviewRenderer} from "./preview";
 import {SelectionRenderer} from "./selection";
 import {UnitRenderer} from "./unit";
-import {WaterRenderer} from "./water";
 
 import type {IRenderer} from "../shared.interfaces";
 import type {ControlsManager} from "../../manager";
@@ -27,8 +26,6 @@ export class Renderer implements IRenderer{
   
   private selection: SelectionRenderer;
 
-  private water: WaterRenderer; 
-
   constructor(canvas: HTMLCanvasElement, controls: ControlsManager) {
     this.scene = new GameScene(canvas, controls);
     this.assets = new AssetManager(this.isLoadingAsset); 
@@ -37,7 +34,6 @@ export class Renderer implements IRenderer{
     this.unit = new UnitRenderer(this.scene.self, this.assets);
     this.preview = new PreviewRenderer(this.scene.self, this.assets);
     this.selection = new SelectionRenderer(this.scene.self, this.assets);
-    this.water = new WaterRenderer(this.scene.self);
   }
 
   private isLoadingAsset = (_isLoaded: boolean) => {}
@@ -88,9 +84,6 @@ export class Renderer implements IRenderer{
   public handleRenderCycleCompleted() {}
 
   public dispose() {
-    this.water.dispose();
-    this.water = null;
-
     this.scene.dispose();
     this.scene = null;
 
