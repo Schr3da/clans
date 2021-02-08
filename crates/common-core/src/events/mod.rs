@@ -12,10 +12,12 @@ pub enum EventTypes {
     NewBuilding,
     RequestMap,
     SendMap,
+    RequestCalculateNewPath,
     RequestConfig,
     SendConfig,
     SendRenderUpdate,
     SendRefreshTheme,
+    SendNewCalculatedPath,
     RemoveBuilding,
 }
 
@@ -23,12 +25,14 @@ pub enum EventTypes {
 pub enum Payload {
     NewBuilding(NewBuildingPayload),
     RemoveBuilding(RemoveBuildingPayload),
+    RequestCalculateNewPath(RequestCalculateNewPathPayload),
     RequestMap(RequestMapPayload),
     SendMap(SendMapPayload),
     RequestConfig(RequestConfigPayload),
     SendConfig(SendConfigPayload),
     SendRenderUpdate(SendRenderUpdatePayload),
     SendRefreshTheme(SendRefreshThemePayload),
+    SendNewCalculatedPath(SendNewCalculatedPathPayload),
 }
 
 #[derive(Clone)]
