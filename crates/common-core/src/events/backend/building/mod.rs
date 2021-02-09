@@ -1,7 +1,6 @@
 use crate::entities::prelude::*;
 
 use crate::events::*;
-
 #[derive(Copy, Clone)]
 pub struct NewBuildingPayload {
     pub frame: Frame,
@@ -21,14 +20,12 @@ pub fn on_new_building(id: BuildingIds, x: i32, y: i32) -> Event {
 #[derive(Copy, Clone)]
 pub struct RemoveBuildingPayload {
     pub x: i32,
-    pub y: i32
+    pub y: i32,
 }
 
 pub fn on_remove_building(x: i32, y: i32) -> Event {
     Event {
         event_type: EventTypes::RemoveBuilding,
-        payload: Payload::RemoveBuilding(RemoveBuildingPayload {
-            x, y, 
-        }),
+        payload: Payload::RemoveBuilding(RemoveBuildingPayload { x, y }),
     }
 }

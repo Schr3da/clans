@@ -42,7 +42,7 @@ where
     }
 }
 
-impl<T> Printable for Renderable <T>
+impl<T> Printable for Renderable<T>
 where
     T: ColorsProperty<T> + Send + Sync + 'static,
 {

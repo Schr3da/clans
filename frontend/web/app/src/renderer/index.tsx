@@ -35,6 +35,7 @@ export class Renderer extends React.PureComponent<IProps, IState> {
     window.preview_renderer = this.handlePreviewData;
     window.selection_renderer = this.handleSelectionData; 
     window.render_cycle_completed = this.handleRenderCycleCompleted;
+    window.path_builder_renderer = this.handlePathBuilderData;
   }
 
   private async loadComponents() {
@@ -67,6 +68,10 @@ export class Renderer extends React.PureComponent<IProps, IState> {
 
   private handleSelectionData = (item: RenderItemDto) => {
     this.renderRef.handleSelectionData(item); 
+  }
+
+  private handlePathBuilderData = (data: Array<number>) => {
+    this.renderRef.handlePathBuilderData(data);
   }
 
   private handleRenderCycleCompleted = () => {

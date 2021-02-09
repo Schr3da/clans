@@ -22,6 +22,6 @@ pub struct RemoveSelectedBuildingPayload {}
 pub fn on_remove_selected_building() -> Event {
     Event {
         event_type: EventTypes::RemoveSelectedBuilding,
-        payload: Payload::RemoveSelectedBuilding(RemoveSelectedBuildingPayload{}),
+        payload: Payload::RemoveSelectedBuilding(RemoveSelectedBuildingPayload {}),
     }
 }

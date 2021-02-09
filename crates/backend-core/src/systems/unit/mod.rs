@@ -24,7 +24,8 @@ impl<'a> System<'a> for UnitSystem {
     fn run(&mut self, data: Self::SystemData) {
         let (map, intervals, mut fovs, mut frames, mut paths) = data;
 
-        for (interval, fov, frame, path) in (&intervals, &mut fovs, &mut frames, &mut paths).join() {
+        for (interval, fov, frame, path) in (&intervals, &mut fovs, &mut frames, &mut paths).join()
+        {
             if interval.needs_update() == false {
                 continue;
             }

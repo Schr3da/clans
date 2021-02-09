@@ -69,7 +69,7 @@ impl<'a> System<'a> for SpawnSystem {
             path: &Path,
             building_frame: &Frame,
             entities: &specs::Read<specs::world::EntitiesRes>,
-            lazy: &specs::Read<specs::LazyUpdate>
+            lazy: &specs::Read<specs::LazyUpdate>,
         ) {
             let prefix = "unit-".to_owned();
 
@@ -84,6 +84,5 @@ impl<'a> System<'a> for SpawnSystem {
                 .with(id.as_field_of_view())
                 .build();
         }
-
     }
 }

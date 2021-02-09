@@ -9,7 +9,7 @@ fn map_to_dto(state: &State) -> Option<common_core::entities::map::Map> {
     let mut map = state.ecs.fetch_mut::<map::Map>();
 
     if map.needs_update() == false {
-        return None        
+        return None;
     }
 
     let data = common_core::entities::map::Map {
@@ -66,14 +66,24 @@ fn resources_to_dto(state: &State) -> Option<ResourcesDto> {
     let mut resource_manager = state.ecs.fetch_mut::<ResourceManager>();
 
     if resource_manager.needs_update() == false {
-        return None        
+        return None;
     }
 
     resource_manager.force_update(false);
-    
+
     Some(ResourcesDto {
         food: resource_manager.food,
         materials: resource_manager.materials,
+    })
+}
+
+fn path_builder_to_dto(state: &State) -> Option<PathBuilderDto> {
+    let mut path_builder = state.ecs.fetch_mut::<PathBuilder>();
+
+    path_builder.force_update(false);
+
+    Some(PathBuilderDto {
+        steps: path_builder.steps.clone(),
     })
 }
 
@@ -82,9 +92,14 @@ fn send_render_update(state: &State) {
     let buildings = buildings_to_dto(state);
     let units = units_to_dto(state);
     let resources = resources_to_dto(state);
+    let path_builder = path_builder_to_dto(state);
 
     state.send(common_core::events::backend::render::on_send_render_update(
-        map, buildings, units, resources
+        map,
+        buildings,
+        units,
+        resources,
+        path_builder,
     ));
 }
 

@@ -13,7 +13,6 @@ pub struct Frame {
 }
 
 impl Printable for Frame {
-    
     fn as_printable(&self) -> String {
         let mut formatter = String::new();
         formatter.push_str("x:");
@@ -26,7 +25,6 @@ impl Printable for Frame {
         formatter.push_str(self.height.to_string().as_str());
         formatter
     }
-
 }
 
 impl Frame {

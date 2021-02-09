@@ -22,8 +22,10 @@ pub fn remove_selected_building(state: &mut State) {
             return;
         }
 
-        state.con.send_event(on_remove_building(selection.frame.x, selection.frame.y));
+        state
+            .con
+            .send_event(on_remove_building(selection.frame.x, selection.frame.y));
     }
-    
+
     clean_up_state_after_event(state);
 }

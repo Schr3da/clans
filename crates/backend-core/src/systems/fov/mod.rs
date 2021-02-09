@@ -33,20 +33,15 @@ impl<'a> System<'a> for FieldOfViewSystem {
 
             fov.force_update(false);
             fov.tiles.clear();
-            fov.tiles = fov::calculate(
-                frame.x,
-                frame.y,
-                fov.range,
-                &map,
-            );
+            fov.tiles = fov::calculate(frame.x, frame.y, fov.range, &map);
 
             match buildings.get(entity) {
-                None => {},
+                None => {}
                 Some(_) => fov::update_visble_tiles_for_fov_with_values(&mut map, &fov, true),
             }
 
             match units.get(entity) {
-                None => {},
+                None => {}
                 Some(_) => fov::update_visble_tiles_for_fov_with_values(&mut map, &fov, true),
             }
         }

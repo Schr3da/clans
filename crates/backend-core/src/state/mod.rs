@@ -35,6 +35,9 @@ impl State {
         let resource_manager = ResourceManager::new();
         ecs.insert(resource_manager);
 
+        let path_builder = PathBuilder::new(Vec::new());
+        ecs.insert(path_builder);
+
         State {
             ecs,
             subscription_callback: Option::None,
@@ -63,7 +66,7 @@ impl State {
         unit_system.run_now(&self.ecs);
 
         handle_subscriptions(self);
-        
+
         self.ecs.maintain();
     }
 

@@ -1,7 +1,6 @@
 use crate::entities::prelude::*;
 
 use crate::events::*;
-
 #[derive(Clone)]
 pub struct SendConfigPayload {
     pub config: Config,

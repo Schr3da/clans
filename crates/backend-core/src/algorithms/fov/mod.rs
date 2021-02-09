@@ -186,7 +186,7 @@ fn cast_light(
 pub fn update_visble_tiles_for_fov_with_values(map: &mut Map, fov: &FieldOfView, value: bool) {
     for tile in fov.tiles.iter() {
         let index = coordinates_to_map_index(tile.x as usize, tile.y as usize, map.columns);
-                            
+
         map.visited_tiles[index] = true;
         map.visible_tiles[index] = value;
         map.force_update(true);

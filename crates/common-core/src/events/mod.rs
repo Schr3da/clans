@@ -32,7 +32,6 @@ pub enum Payload {
     SendConfig(SendConfigPayload),
     SendRenderUpdate(SendRenderUpdatePayload),
     SendRefreshTheme(SendRefreshThemePayload),
-    SendNewCalculatedPath(SendNewCalculatedPathPayload),
 }
 
 #[derive(Clone)]

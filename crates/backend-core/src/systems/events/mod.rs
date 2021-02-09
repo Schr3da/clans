@@ -3,8 +3,8 @@ use common_core::prelude::*;
 
 use crate::entities::map;
 use crate::state::State;
-use crate::algorithms::navigation::*;
 use crate::systems::building::*;
+use crate::systems::path::*;
 
 fn handle_new_building(state: &mut State, payload: events::backend::building::NewBuildingPayload) {
     let id = payload.current_type;
@@ -15,8 +15,11 @@ fn handle_new_building(state: &mut State, payload: events::backend::building::Ne
     );
 }
 
-fn handle_remove_building(state: &mut State, payload: events::backend::building::RemoveBuildingPayload) {
-   remove_building(state, payload.x, payload.y);
+fn handle_remove_building(
+    state: &mut State,
+    payload: events::backend::building::RemoveBuildingPayload,
+) {
+    remove_building(state, payload.x, payload.y);
 }
 
 fn handle_request_config(state: &mut State) {
@@ -39,16 +42,17 @@ fn handle_request_map(state: &mut State) {
     }));
 }
 
-fn handle_request_calculate_new_path(
+fn handle_calculate_new_path(
     state: &mut State,
-    payload: events::frontend::path::RequestCalculateNewPathPayload
+    payload: events::frontend::path::RequestCalculateNewPathPayload,
 ) {
-    let map = state.ecs.fetch::<map::Map>(); 
-    let start = Frame::new(payload.start_x, payload.start_y, 1, 1);
-    let target = Frame::new(payload.end_x, payload.end_y, 1, 1);
-    let navigation = calculate_navigation_to_target(&map, &start, &target);
-
-    state.send(events::backend::path::on_send_new_path_calculation(navigation.steps));
+    calculate_new_path(
+        state,
+        payload.start_x,
+        payload.start_y,
+        payload.end_x,
+        payload.end_y,
+    );
 }
 
 pub fn dispatch_event(state: &mut State, event: Event) {
@@ -56,7 +60,7 @@ pub fn dispatch_event(state: &mut State, event: Event) {
         Payload::NewBuilding(payload) => handle_new_building(state, payload),
         Payload::RequestConfig(_) => handle_request_config(state),
         Payload::RequestMap(_) => handle_request_map(state),
-        Payload::RequestCalculateNewPath(payload) => handle_request_calculate_new_path(state, payload), 
+        Payload::RequestCalculateNewPath(payload) => handle_calculate_new_path(state, payload),
         Payload::RemoveBuilding(payload) => handle_remove_building(state, payload),
         _ => {}
     }

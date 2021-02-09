@@ -54,7 +54,7 @@ impl Updateable for ResourceManager {
     fn needs_update(&self) -> bool {
         self.needs_update
     }
-    
+
     fn force_update(&mut self, should_update: bool) {
         self.needs_update = should_update;
     }
@@ -68,9 +68,9 @@ impl ResourceManager {
             needs_update: true,
         }
     }
-    
+
     pub fn income(&mut self, resource: ResourceTypes) {
-        let value = resource.as_value(); 
+        let value = resource.as_value();
         self.calculate(resource, value);
     }
 
@@ -82,13 +82,13 @@ impl ResourceManager {
 
     pub fn can_buy(&self, item: &impl CostsProperty) -> bool {
         let (food, materials) = item.as_costs();
-        self.food >= food && self.materials >= materials 
+        self.food >= food && self.materials >= materials
     }
 
     fn calculate(&mut self, resource: ResourceTypes, value: i32) {
         match resource {
             ResourceTypes::Materials => self.materials += value,
-            ResourceTypes::Farms => self.food += value, 
+            ResourceTypes::Farms => self.food += value,
         };
 
         if self.materials < 0 {

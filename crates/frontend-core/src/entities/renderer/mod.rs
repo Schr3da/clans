@@ -9,6 +9,7 @@ pub struct RendererData {
     pub buildings: BuildingDtos,
     pub units: UnitDtos,
     pub resources: Option<ResourcesDto>,
+    pub path_builder: Option<PathBuilderDto>,
 }
 
 impl Themeable for RendererData {
@@ -31,7 +32,8 @@ impl RendererData {
             map: Map::default(),
             buildings: Vec::<BuildingDto>::new(),
             units: Vec::<UnitDto>::new(),
-            resources: None, 
+            resources: None,
+            path_builder: None,
         }
     }
 }

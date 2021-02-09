@@ -15,6 +15,6 @@ impl<'a> System<'a> for CurrentTimeSystem {
 
     fn run(&mut self, data: Self::SystemData) {
         let mut config = data;
-        config.current_time = current_timestamp(); 
+        config.current_time = current_timestamp();
     }
 }

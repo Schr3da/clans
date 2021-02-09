@@ -14,7 +14,7 @@ pub struct BuildTime {
 
 impl BuildTime {
     pub fn new(seconds: i64) -> Self {
-        let current_time = current_timestamp(); 
+        let current_time = current_timestamp();
         match current_time + seconds == current_time {
             true => BuildTime {
                 start: current_time,

@@ -70,7 +70,7 @@ impl RenderProperty<UnitIds> for UnitIds {
     fn as_renderable(self) -> Renderable<UnitIds> {
         self.as_renderable_with_prefix("unit".to_owned())
     }
-    
+
     fn as_renderable_with_prefix(self, prefix: String) -> Renderable<UnitIds> {
         let (background, foreground) = self.as_colors(ThemeTypes::Dark);
 

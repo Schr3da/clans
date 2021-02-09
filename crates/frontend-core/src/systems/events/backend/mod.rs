@@ -33,11 +33,9 @@ fn did_receive_render_update(
         renderer_data.units = units;
     }
 
-    renderer_data.resources = payload.resources;
-}
+    renderer_data.path_builder = payload.path_builder;
 
-fn did_receive_new_path_calculation(_ecs: &RCStateEcs, _payload: common_core::events::backend::path::SendNewCalculatedPathPayload) {
-    common_core::utils::log::print_str(&"received new path calculation");
+    renderer_data.resources = payload.resources;
 }
 
 pub fn dispatch_backend_event(ecs: &RCStateEcs, event: Event) {
@@ -45,7 +43,6 @@ pub fn dispatch_backend_event(ecs: &RCStateEcs, event: Event) {
         Payload::SendConfig(payload) => did_received_config(ecs, payload.config),
         Payload::SendMap(payload) => did_receive_map(ecs, payload.map),
         Payload::SendRenderUpdate(payload) => did_receive_render_update(ecs, payload),
-        Payload::SendNewCalculatedPath(payload) => did_receive_new_path_calculation(ecs, payload),
         _ => {}
     };
 }

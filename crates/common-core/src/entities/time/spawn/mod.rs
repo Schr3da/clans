@@ -15,7 +15,7 @@ pub struct SpawnTime {
 
 impl SpawnTime {
     pub fn new(seconds: i64) -> Self {
-        let current_time = current_timestamp(); 
+        let current_time = current_timestamp();
         SpawnTime {
             interval: seconds,
             start: current_time,

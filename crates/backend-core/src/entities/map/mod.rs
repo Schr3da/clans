@@ -141,7 +141,7 @@ impl Map {
         for x in frame.x..=frame.x + frame.width {
             for y in frame.y..=frame.y + frame.height {
                 let index = coordinates_to_map_index(x as usize, y as usize, self.columns);
-                
+
                 if self.tiles[index].current_type != TileTypes::Building {
                     continue;
                 }
@@ -181,7 +181,7 @@ impl Map {
         let rows = self.rows;
 
         let mut tiles = vec![TileTypes::Ground.as_renderable(); columns * rows];
-        
+
         for x in 0..columns {
             for y in 0..rows {
                 let prefix = Self::id_prefix(x, y);

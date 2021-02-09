@@ -6,13 +6,15 @@ pub struct SendRenderUpdatePayload {
     pub buildings: Option<BuildingDtos>,
     pub units: Option<UnitDtos>,
     pub resources: Option<ResourcesDto>,
+    pub path_builder: Option<PathBuilderDto>,
 }
 
 pub fn on_send_render_update(
     map: Option<Map>,
-    buildings: Option<BuildingDtos>, 
+    buildings: Option<BuildingDtos>,
     units: Option<UnitDtos>,
-    resources: Option<ResourcesDto>
+    resources: Option<ResourcesDto>,
+    path_builder: Option<PathBuilderDto>,
 ) -> Event {
     Event {
         event_type: EventTypes::SendRenderUpdate,
@@ -21,6 +23,7 @@ pub fn on_send_render_update(
             buildings,
             units,
             resources,
+            path_builder,
         }),
     }
 }

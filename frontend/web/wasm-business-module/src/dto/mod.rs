@@ -1,41 +1,41 @@
 use std::marker::Copy;
 use wasm_bindgen::prelude::*;
 
-use common_core::entities::renderable::Renderable;
 use common_core::entities::frame::Frame;
+use common_core::entities::renderable::Renderable;
 
 #[wasm_bindgen]
 #[derive(Copy, Clone)]
 pub enum MouseEventType {
-    pub ButtonDown,
-    pub ButtonUp,
-    pub Move,
+    ButtonDown,
+    ButtonUp,
+    Move,
 }
 
 #[wasm_bindgen]
 #[derive(Copy, Clone, Eq, PartialEq)]
 pub enum MouseButtonType {
-    pub Left = 0,
-    pub Middle = 1,
-    pub Right = 2,
-    pub None = 100,
+    Left = 0,
+    Middle = 1,
+    Right = 2,
+    None = 100,
 }
 
 #[wasm_bindgen]
 pub struct MouseEventDto {
     pub event_type: MouseEventType,
-    pub button_type: MouseButtonType, 
+    pub button_type: MouseButtonType,
     pub x: i32,
     pub y: i32,
 }
 
 #[wasm_bindgen]
 impl MouseEventDto {
-    pub fn new(event_type: MouseEventType, button_type: MouseButtonType, x: i32,  y: i32) -> Self {
+    pub fn new(event_type: MouseEventType, button_type: MouseButtonType, x: i32, y: i32) -> Self {
         MouseEventDto {
-            event_type, 
+            event_type,
             button_type,
-            x, 
+            x,
             y,
         }
     }
@@ -44,8 +44,8 @@ impl MouseEventDto {
 #[wasm_bindgen]
 #[derive(Copy, Clone)]
 pub enum KeyboardEventType {
-    pub KeyDown,
-    pub KeyUp,
+    KeyDown,
+    KeyUp,
 }
 
 #[wasm_bindgen]
@@ -74,8 +74,9 @@ pub struct RenderItemDto {
 }
 
 impl RenderItemDto {
-    pub fn to_dto_with_frame<T>(frame: &Frame, renderable: &Renderable<T>) -> Self 
-    where T: Send + Sync + 'static,
+    pub fn to_dto_with_frame<T>(frame: &Frame, renderable: &Renderable<T>) -> Self
+    where
+        T: Send + Sync + 'static,
     {
         RenderItemDto {
             glyph: renderable.glyph,
@@ -86,8 +87,9 @@ impl RenderItemDto {
         }
     }
 
-    pub fn to_dto<T>(renderable: &Renderable<T>, x: i32, y: i32) -> Self 
-    where T: Send + Sync + 'static,
+    pub fn to_dto<T>(renderable: &Renderable<T>, x: i32, y: i32) -> Self
+    where
+        T: Send + Sync + 'static,
     {
         RenderItemDto {
             glyph: renderable.glyph,

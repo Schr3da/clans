@@ -47,8 +47,9 @@ impl State {
 
     pub fn setup(&mut self) {
         self.subscribe_to_backend_events();
-        self.con.send_event(events::frontend::config::on_request_config());
-        self.con.send_event(events::frontend::map::on_request_map()); 
+        self.con
+            .send_event(events::frontend::config::on_request_config());
+        self.con.send_event(events::frontend::map::on_request_map());
     }
 
     fn subscribe_to_backend_events(&mut self) {
@@ -85,7 +86,7 @@ impl State {
         let config = ecs.fetch::<Config>();
 
         let map = &data.map;
-       
+
         if self.should_rerender_always == false && map.needs_update() == false {
             return;
         }
@@ -117,14 +118,15 @@ impl State {
         let max_index = data.buildings.len();
         let mut index = 0;
 
-        for (frame, time, building) in &data.buildings { 
-            let map_index = coordinates_to_map_index(frame.x as usize, frame.y as usize, data.map.columns);
+        for (frame, time, building) in &data.buildings {
+            let map_index =
+                coordinates_to_map_index(frame.x as usize, frame.y as usize, data.map.columns);
 
             index += 1;
             if data.map.visible_tiles[map_index] == false {
                 continue;
             }
-            
+
             cb(frame, time, building, index, max_index);
         }
     }
@@ -165,7 +167,7 @@ impl State {
     {
         let ecs = self.ecs.borrow();
         let mut selection = ecs.fetch_mut::<Selection>();
-    
+
         if self.should_rerender_always == false && selection.needs_update() == false {
             return;
         }
@@ -174,9 +176,9 @@ impl State {
         cb(&selection.frame, &selection.renderable);
     }
 
-    pub fn resources_renderer<F>(&self, cb: &mut F) 
-    where 
-        F: FnMut(ResourcesDto) 
+    pub fn resources_renderer<F>(&self, cb: &mut F)
+    where
+        F: FnMut(ResourcesDto),
     {
         let ecs = self.ecs.borrow();
         let mut data = ecs.fetch_mut::<RendererData>();
@@ -185,8 +187,22 @@ impl State {
             None => return,
             Some(r) => cb(r.clone()),
         };
-        
+
         data.resources = None;
     }
 
+    pub fn path_builder_renderer<F>(&self, cb: &mut F)
+    where
+        F: FnMut(Option<Vec<usize>>),
+    {
+        let ecs = self.ecs.borrow();
+        let data = ecs.fetch::<RendererData>();
+
+        match &data.path_builder {
+            None => cb(Option::None),
+            Some(p) => {
+                cb(Option::Some(p.steps.clone()));
+            }
+        };
+    }
 }

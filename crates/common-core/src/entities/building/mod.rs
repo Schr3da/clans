@@ -101,7 +101,7 @@ impl TimeProperty<BuildingIds> for BuildingIds {
 impl SpawnProperty<UnitIds> for BuildingIds {
     fn as_spawn_time(&self) -> Option<SpawnTime> {
         match self {
-            BuildingIds::Farm => Some(SpawnTime::new(5)), 
+            BuildingIds::Farm => Some(SpawnTime::new(5)),
             BuildingIds::Mine => Some(SpawnTime::new(10)),
             BuildingIds::Factory => Some(SpawnTime::new(5)),
         }

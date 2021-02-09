@@ -4,7 +4,7 @@ import type {RenderItemDto} from "../../../pkg";
 
 import type {ControlsManager} from "../../manager";
 
-import {defaultMapSize} from "../utils";
+import {defaultMapSize, mapIndexToCoordinates} from "../utils";
 import {generateMapTileId} from "./utils";
 import {Column2d} from "./column";
 
@@ -25,6 +25,7 @@ enum RenderDataKeys {
   units = "units",
   preview = "preview",
   selection = "selection",
+  pathBuilder = "pathBuilder",
 }
 
 type RendererData = Map<string, ITile>;
@@ -58,6 +59,7 @@ export class Renderer2D extends React.PureComponent<IProps, IState> {
     this.tiles.set(RenderDataKeys.units, new Map());
     this.tiles.set(RenderDataKeys.preview, new Map());
     this.tiles.set(RenderDataKeys.selection, new Map());
+    this.tiles.set(RenderDataKeys.pathBuilder, new Map());
 
     let size = defaultMapSize();
 
@@ -90,11 +92,16 @@ export class Renderer2D extends React.PureComponent<IProps, IState> {
   
   private handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     clearTimeout(this.debounceMouseMove);
+
+    if (this.props.controls == null) {
+      return;
+    }
+    
     this.debounceMouseMove = setTimeout(() => {
       const x = Math.floor(event.clientX / this.getColumnHeight());
       const y = Math.floor(event.clientY / this.getRowHeight());
       this.props.controls.setMouseMoveEvent(x, y);
-    }, 100);
+    }, 30);
   }
 
   public componentWillUnmount() {
@@ -213,6 +220,28 @@ export class Renderer2D extends React.PureComponent<IProps, IState> {
     match.y = item.y;
   }
 
+  public handlePathBuilderData(data: Array<number>) {
+    let container = this.getRenderDataContainer(RenderDataKeys.pathBuilder); 
+    container.clear();
+    
+    (data || []).forEach((d) => {
+      const {x, y} = mapIndexToCoordinates(d);
+
+      let id = "path-" + x + "-"  + y;
+      let match = container.get(id);          
+  
+      if (match == null) {
+        return container.set(id, {
+          id, 
+          glyph: "x",
+          x: x,
+          y: y,
+          isVisible: true,
+        });
+      }
+    });
+  }
+
   public handleRenderCycleCompleted() {
     let collection = new Map<string, ITile>();
     
@@ -227,6 +256,10 @@ export class Renderer2D extends React.PureComponent<IProps, IState> {
     this.tiles.get(RenderDataKeys.buildings).forEach((data) => {
       collection.set(generateMapTileId(data.x, data.y), data); 
     });
+
+    this.tiles.get(RenderDataKeys.pathBuilder).forEach((data) => {
+      collection.set(generateMapTileId(data.x, data.y), data); 
+    })
 
     this.tiles.get(RenderDataKeys.preview).forEach((data) => {
       collection.set(generateMapTileId(data.x, data.y), data); 

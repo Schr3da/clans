@@ -60,6 +60,7 @@ pub struct PathRenderer {
     pub end: Frame,
     pub steps: Vec<usize>,
     pub is_colliding: bool,
+    pub id: Option<i64>,
     pub current_state: PathStates,
     needs_update: bool,
 }
@@ -86,6 +87,7 @@ impl Updateable for PathRenderer {
 impl PathRenderer {
     pub fn new() -> Self {
         PathRenderer {
+            id: Option::None,
             renderables: Vec::new(),
             steps: Vec::new(),
             start: Frame::new(0, 0, 1, 1),
@@ -99,6 +101,7 @@ impl PathRenderer {
     fn reset(&mut self) {
         self.renderables.clear();
         self.steps.clear();
+        self.id = Option::None;
         self.is_colliding = false;
         self.needs_update = true;
         self.current_state = PathStates::OnStandby;
@@ -114,6 +117,7 @@ impl PathRenderer {
 
     pub fn set_start(&mut self, x: i32, y: i32) {
         self.reset();
+        self.id = Option::Some(current_timestamp());
         self.start.x = x;
         self.start.y = y;
         self.current_state = PathStates::OnMove;
@@ -127,8 +131,6 @@ impl PathRenderer {
 
         self.end.x = x;
         self.end.y = y;
-
-        common_core::utils::log::print_str(&"update move");
 
         self.force_update(self.end.x != x && self.end.y != y);
     }

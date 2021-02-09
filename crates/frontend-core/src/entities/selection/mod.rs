@@ -23,7 +23,6 @@ impl Themeable for Selection {
     }
 }
 
-
 impl SelectableProperty for Selection {
     fn is_selected(&self) -> bool {
         match &self.renderable {

@@ -7,10 +7,10 @@ use crate::entities::map::Map;
 use crate::state::State;
 
 fn calculate_path(state: &mut State, frame: &Frame) -> Path {
-    let map = state.ecs.fetch::<Map>(); 
+    let map = state.ecs.fetch::<Map>();
     let target = Frame::new((map.columns / 2) as i32, (map.rows / 2) as i32, 1, 1);
     let navigation = calculate_navigation_to_target(&map, &frame, &target);
-    
+
     Path::new(navigation.steps)
 }
 
@@ -23,9 +23,9 @@ fn can_build(state: &mut State, id: &BuildingIds, frame: &Frame) -> bool {
 
     let map = state.ecs.fetch_mut::<Map>();
     let is_colliding = has_tile_collision_for_frame(&frame, &map.tiles, map.columns, map.rows);
-    
+
     if is_colliding == true {
-       return false; 
+        return false;
     }
 
     return true;
@@ -59,7 +59,8 @@ pub fn new_building(state: &mut State, id: &BuildingIds, frame: Frame) {
 
     let prefix = "building-".to_owned();
 
-    let mut entity = state.ecs
+    let mut entity = state
+        .ecs
         .create_entity()
         .with(frame)
         .with(path)
@@ -75,7 +76,7 @@ pub fn new_building(state: &mut State, id: &BuildingIds, frame: Frame) {
     entity.build();
 }
 
-pub fn remove_building(state: &mut State, x: i32, y: i32) { 
+pub fn remove_building(state: &mut State, x: i32, y: i32) {
     let mut matched_entity = Option::None;
 
     {
@@ -84,23 +85,22 @@ pub fn remove_building(state: &mut State, x: i32, y: i32) {
             WriteExpect<Map>,
             ReadStorage<Frame>,
             ReadStorage<FieldOfView>,
-            ReadStorage<Renderable<BuildingIds>>
+            ReadStorage<Renderable<BuildingIds>>,
         ) = state.ecs.system_data();
-        
-        let (entities, mut map, frames, fovs, buildings) = data; 
+
+        let (entities, mut map, frames, fovs, buildings) = data;
 
         for (entity, frame, fov, _) in (&entities, &frames, &fovs, &buildings).join() {
-            if frame.contains_coordinates(x, y) == false { 
-                continue
+            if frame.contains_coordinates(x, y) == false {
+                continue;
             }
 
             map.remove_blocks_for_building(frame);
             update_visble_tiles_for_fov_with_values(&mut map, &fov, false);
-            
+
             matched_entity = Some(entity);
             break;
         }
-        
     }
 
     if matched_entity == None {

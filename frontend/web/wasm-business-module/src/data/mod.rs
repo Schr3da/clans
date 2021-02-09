@@ -13,6 +13,7 @@ extern "C" {
     fn building_renderer(id: &str, item: RenderItemDto, progress: i64, index: usize, total: usize);
     fn unit_renderer(id: &str, item: RenderItemDto, index: usize, total: usize);
     fn preview_renderer(item: Option<RenderItemDto>);
+    fn path_builder_renderer(item: Option<Vec<usize>>);
     fn selection_renderer(item: Option<RenderItemDto>);
     fn resources_renderer(food: i32, materials: i32);
     fn render_cycle_completed();
@@ -59,9 +60,9 @@ impl Data {
 
         if let Some(e) = mouse_event() {
             match e.event_type {
-                MouseEventType::ButtonDown => {},
-                MouseEventType::Move => self.handle_mouse_move(e.x, e.y), 
-                MouseEventType::ButtonUp => self.handle_mouse_up(e.button_type, e.x, e.y), 
+                MouseEventType::ButtonDown => {}
+                MouseEventType::Move => self.handle_mouse_move(e.x, e.y),
+                MouseEventType::ButtonUp => self.handle_mouse_up(e.button_type, e.x, e.y),
             }
         }
     }
@@ -71,19 +72,21 @@ impl Data {
     }
 
     pub fn render(&mut self) {
-        self.state.map_tile_renderer(&mut |tile, is_visible, x, y, index, total| {
-            let item = RenderItemDto::to_dto(tile, x, y);
-            map_tile_renderer(tile.id.as_str(), item, is_visible, index, total); 
-        });
+        self.state
+            .map_tile_renderer(&mut |tile, is_visible, x, y, index, total| {
+                let item = RenderItemDto::to_dto(tile, x, y);
+                map_tile_renderer(tile.id.as_str(), item, is_visible, index, total);
+            });
 
-        self.state.building_renderer(&mut |frame, time, building, index, total| {
-            let item = RenderItemDto::to_dto_with_frame(frame, building);
-            building_renderer(building.id.as_str(), item, time.progress, index, total); 
-        });
+        self.state
+            .building_renderer(&mut |frame, time, building, index, total| {
+                let item = RenderItemDto::to_dto_with_frame(frame, building);
+                building_renderer(building.id.as_str(), item, time.progress, index, total);
+            });
 
         self.state.unit_renderer(&mut |frame, unit, index, total| {
             let item = RenderItemDto::to_dto_with_frame(frame, unit);
-            unit_renderer(unit.id.as_str(), item, index, total); 
+            unit_renderer(unit.id.as_str(), item, index, total);
         });
 
         self.state.preview_renderer(&mut |frame, preview| {
@@ -91,7 +94,7 @@ impl Data {
                 None => preview_renderer(Option::None),
                 Some(data) => {
                     let item = RenderItemDto::to_dto_with_frame(frame, data);
-                    preview_renderer(Option::Some(item)); 
+                    preview_renderer(Option::Some(item));
                 }
             };
         });
@@ -101,15 +104,19 @@ impl Data {
                 None => selection_renderer(Option::None),
                 Some(data) => {
                     let item = RenderItemDto::to_dto_with_frame(frame, data);
-                    selection_renderer(Option::Some(item)); 
+                    selection_renderer(Option::Some(item));
                 }
             };
+        });
+
+        self.state.path_builder_renderer(&mut |data| {
+            path_builder_renderer(data);
         });
 
         self.state.resources_renderer(&mut |resources| {
             resources_renderer(resources.food, resources.materials);
         });
-    
+
         render_cycle_completed();
     }
 }

@@ -9,7 +9,7 @@ pub struct Connection {
 impl Connection {
     pub fn new() -> Self {
         Connection {
-            state: State::new(100, 100),
+            state: State::new(20, 20),
         }
     }
 

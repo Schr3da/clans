@@ -12,5 +12,5 @@ use js_sys::Date;
 #[cfg(target_arch = "wasm32")]
 pub fn current_timestamp() -> i64 {
     let date = Date::now();
-    (date / 1000.0) as i64 
+    (date / 1000.0) as i64
 }
