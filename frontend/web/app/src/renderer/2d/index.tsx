@@ -4,7 +4,7 @@ import type {RenderItemDto} from "../../../pkg";
 
 import type {ControlsManager} from "../../manager";
 
-import {defaultMapSize, mapIndexToCoordinates} from "../utils";
+import {defaultMapSize} from "../utils";
 import {generateMapTileId} from "./utils";
 import {Column2d} from "./column";
 
@@ -101,7 +101,7 @@ export class Renderer2D extends React.PureComponent<IProps, IState> {
       const x = Math.floor(event.clientX / this.getColumnHeight());
       const y = Math.floor(event.clientY / this.getRowHeight());
       this.props.controls.setMouseMoveEvent(x, y);
-    }, 30);
+    }, 16);
   }
 
   public componentWillUnmount() {
@@ -220,25 +220,19 @@ export class Renderer2D extends React.PureComponent<IProps, IState> {
     match.y = item.y;
   }
 
-  public handlePathBuilderData(data: Array<number>) {
+  public handlePathBuilderData(id: string | null, item: RenderItemDto | null, index: number, total: number) {
     let container = this.getRenderDataContainer(RenderDataKeys.pathBuilder); 
-    container.clear();
-    
-    (data || []).forEach((d) => {
-      const {x, y} = mapIndexToCoordinates(d);
 
-      let id = "path-" + x + "-"  + y;
-      let match = container.get(id);          
-  
-      if (match == null) {
-        return container.set(id, {
-          id, 
-          glyph: "x",
-          x: x,
-          y: y,
-          isVisible: true,
-        });
-      }
+    if (index == 0) {
+      container.clear();
+    }
+
+    container.set(id, {
+      id, 
+      glyph: item.glyph,
+      x: item.x,
+      y: item.y,
+      isVisible: true,
     });
   }
 

@@ -12,9 +12,3 @@ export const defaultMapSize = (
     height: rows * tileHeight,
   }
 };
-
-export const mapIndexToCoordinates = (index: number) => {
-  let x = index % columns;
-  let y = Math.floor(index / columns);
-  return { x, y };
-}

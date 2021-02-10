@@ -193,16 +193,28 @@ impl State {
 
     pub fn path_builder_renderer<F>(&self, cb: &mut F)
     where
-        F: FnMut(Option<Vec<usize>>),
+        F: FnMut(&Frame, &Renderable<PathStates>, usize, usize),
     {
         let ecs = self.ecs.borrow();
         let data = ecs.fetch::<RendererData>();
+        let mut path_renderer= ecs.fetch_mut::<PathRenderer>();
 
-        match &data.path_builder {
-            None => cb(Option::None),
-            Some(p) => {
-                cb(Option::Some(p.steps.clone()));
-            }
-        };
+        if self.should_rerender_always == false && path_renderer.needs_update() == false {
+            return;
+        }
+        
+        if path_renderer.needs_update() == true {        
+            path_renderer.create_renderables(data.map.columns);
+            path_renderer.force_update(false);
+        }
+
+        let renderables = &path_renderer.renderables;
+        let max_index = renderables.len();
+        let mut index = 0;
+
+        for (frame, item) in renderables {
+            cb(&frame, &item, index, max_index);
+            index += 1;
+        }
     }
 }

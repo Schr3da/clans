@@ -81,7 +81,7 @@ export class Renderer implements IRenderer{
     this.selection.render(item); 
   }
 
-  public handlePathBuilderData(data: Array<any>) {}
+  public handlePathBuilderData(id: string | null, item: RenderItemDto | null) {}
 
   public handleRenderCycleCompleted() {}
 

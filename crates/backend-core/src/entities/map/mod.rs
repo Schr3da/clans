@@ -109,6 +109,10 @@ impl Map {
         map
     }
 
+    pub fn reference(&self) -> &Self {
+        self
+    }
+
     pub fn has_collision(&self, x: usize, y: usize) -> bool {
         if coordinates_out_of_map_range(x, y, self.columns, self.rows) {
             return true;

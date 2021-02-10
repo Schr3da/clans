@@ -63,12 +63,12 @@ export class Renderer3D extends React.PureComponent<IProps, unknown> implements 
     this.renderer.handleSelectionData(item);
   }
 
-  public handlePathBuilderData(data: Array<number>) {
+  public handlePathBuilderData(id: string, data: RenderItemDto) {
     if (this.renderer == null) {
       return;
     }
 
-    console.log(data);
+    console.log(id, data);
     console.log("Path Builder not implemented");
   }
 

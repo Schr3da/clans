@@ -13,6 +13,9 @@ specs-derive = "0.4.1"
 rust-hsluv = "0.1.4"
 chrono = "0.4.19"
 uuid = { version = "0.8", features = ["v4", "wasm-bindgen"] }
+bracket-geometry = "0.8.1"
+bracket-pathfinding = "0.8.1"
+bracket-algorithm-traits = "0.8.1"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 wasm-bindgen = "0.2.68"

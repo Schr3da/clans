@@ -70,8 +70,8 @@ export class Renderer extends React.PureComponent<IProps, IState> {
     this.renderRef.handleSelectionData(item); 
   }
 
-  private handlePathBuilderData = (data: Array<number>) => {
-    this.renderRef.handlePathBuilderData(data);
+  private handlePathBuilderData = (id: string | null, item: RenderItemDto | null, index: number, total: number) => {
+    this.renderRef.handlePathBuilderData(id, item, index, total);
   }
 
   private handleRenderCycleCompleted = () => {

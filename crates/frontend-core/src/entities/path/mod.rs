@@ -55,19 +55,18 @@ impl EnumIterator<PathStates> for PathStates {
 
 #[derive(Clone, Component)]
 pub struct PathRenderer {
-    pub renderables: Vec<Renderable<i32>>,
+    pub renderables: Vec<(Frame, Renderable<PathStates>)>,
     pub start: Frame,
     pub end: Frame,
     pub steps: Vec<usize>,
     pub is_colliding: bool,
-    pub id: Option<i64>,
     pub current_state: PathStates,
     needs_update: bool,
 }
 
 impl Themeable for PathRenderer {
     fn change_theme(&mut self, next: ThemeTypes) {
-        for renderable in self.renderables.iter_mut() {
+        for (_, renderable) in self.renderables.iter_mut() {
             renderable.foreground = color_05(next);
             renderable.background = color_06(next);
         }
@@ -87,7 +86,6 @@ impl Updateable for PathRenderer {
 impl PathRenderer {
     pub fn new() -> Self {
         PathRenderer {
-            id: Option::None,
             renderables: Vec::new(),
             steps: Vec::new(),
             start: Frame::new(0, 0, 1, 1),
@@ -101,7 +99,6 @@ impl PathRenderer {
     fn reset(&mut self) {
         self.renderables.clear();
         self.steps.clear();
-        self.id = Option::None;
         self.is_colliding = false;
         self.needs_update = true;
         self.current_state = PathStates::OnStandby;
@@ -117,35 +114,31 @@ impl PathRenderer {
 
     pub fn set_start(&mut self, x: i32, y: i32) {
         self.reset();
-        self.id = Option::Some(current_timestamp());
         self.start.x = x;
         self.start.y = y;
         self.current_state = PathStates::OnMove;
-        self.force_update(true);
     }
 
-    pub fn update(&mut self, x: i32, y: i32) {
+    pub fn update(&mut self, x: i32, y: i32, steps: Vec<usize>) {
         if self.current_state != PathStates::OnMove {
             return;
         }
 
+        self.steps = steps;
         self.end.x = x;
         self.end.y = y;
-
-        self.force_update(self.end.x != x && self.end.y != y);
     }
 
     pub fn set_end(&mut self, x: i32, y: i32) {
         self.current_state = PathStates::OnStandby;
         self.end.x = x;
         self.end.y = y;
-        self.force_update(true);
     }
 
     pub fn handle_collision(&mut self, is_colliding: bool) {
         self.is_colliding = is_colliding;
 
-        for renderable in self.renderables.iter_mut() {
+        for (_, renderable ) in self.renderables.iter_mut() {
             let foreground = match is_colliding {
                 true => color_03(ThemeTypes::Dark),
                 false => color_05(ThemeTypes::Dark),
@@ -154,5 +147,23 @@ impl PathRenderer {
         }
 
         self.force_update(false);
+    }
+
+    pub fn create_renderables(&mut self, columns: usize) {
+        self.renderables = self.steps.clone().into_iter().map(|index| {
+            let (x, y) = map_index_to_coordinates(index, columns); 
+            let frame = Frame::new(x, y, 1, 1);
+
+            let prefix = "path-".to_owned();
+            let renderable = Renderable {
+                id: create_random_id(prefix),
+                glyph: 'x',
+                foreground: color_08(ThemeTypes::Dark),
+                background: color_10(ThemeTypes::Dark),
+                current_type: PathStates::OnMove 
+            };
+            
+            (frame, renderable)
+        }).collect();
     }
 }

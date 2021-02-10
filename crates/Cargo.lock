@@ -107,6 +107,9 @@ dependencies = [
 name = "common-core"
 version = "0.1.0"
 dependencies = [
+ "bracket-algorithm-traits",
+ "bracket-geometry",
+ "bracket-pathfinding",
  "chrono",
  "js-sys",
  "rust-hsluv",

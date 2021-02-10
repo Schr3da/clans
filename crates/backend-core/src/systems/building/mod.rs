@@ -6,14 +6,6 @@ use crate::algorithms::prelude::*;
 use crate::entities::map::Map;
 use crate::state::State;
 
-fn calculate_path(state: &mut State, frame: &Frame) -> Path {
-    let map = state.ecs.fetch::<Map>();
-    let target = Frame::new((map.columns / 2) as i32, (map.rows / 2) as i32, 1, 1);
-    let navigation = calculate_navigation_to_target(&map, &frame, &target);
-
-    Path::new(navigation.steps)
-}
-
 fn can_build(state: &mut State, id: &BuildingIds, frame: &Frame) -> bool {
     let resource_manager = state.ecs.fetch::<ResourceManager>();
 
@@ -55,8 +47,7 @@ pub fn new_building(state: &mut State, id: &BuildingIds, frame: Frame) {
         config.force_update(true);
     }
 
-    let path = calculate_path(state, &frame);
-
+    let path = Path::new(Vec::new());
     let prefix = "building-".to_owned();
 
     let mut entity = state

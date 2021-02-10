@@ -14,7 +14,7 @@ declare global {
       preview_renderer: (item: RenderItemDto | null) => void;
       selection_renderer: (item: RenderItemDto | null) => void;
       resources_renderer: (food: number, materials: number) => void;
-      path_builder_renderer: (data: Array<number>) => void; 
+      path_builder_renderer: (id: string | null, item: RenderItemDto | null, index: number, total: number) => void; 
       render_cycle_completed: () => void;
       mouse_event: () => MouseEventDto| null;
       keyboard_event: () => KeyboardEventDto| null;
@@ -28,6 +28,6 @@ export interface IRenderer {
   handleUnitData: (id: string, item: RenderItemDto) => void;
   handlePreviewData: (item: RenderItemDto) => void;
   handleSelectionData: (item: RenderItemDto) => void;
+  handlePathBuilderData: (id: string | null, item: RenderItemDto | null, index: number, total: number) => void
   handleRenderCycleCompleted: () => void;
-  handlePathBuilderData: (data: Array<number>) => void;
 }

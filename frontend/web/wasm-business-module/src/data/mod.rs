@@ -13,7 +13,7 @@ extern "C" {
     fn building_renderer(id: &str, item: RenderItemDto, progress: i64, index: usize, total: usize);
     fn unit_renderer(id: &str, item: RenderItemDto, index: usize, total: usize);
     fn preview_renderer(item: Option<RenderItemDto>);
-    fn path_builder_renderer(item: Option<Vec<usize>>);
+    fn path_builder_renderer(id: &str, item: RenderItemDto, index: usize, total: usize);
     fn selection_renderer(item: Option<RenderItemDto>);
     fn resources_renderer(food: i32, materials: i32);
     fn render_cycle_completed();
@@ -109,8 +109,9 @@ impl Data {
             };
         });
 
-        self.state.path_builder_renderer(&mut |data| {
-            path_builder_renderer(data);
+        self.state.path_builder_renderer(&mut |frame, tile, index, total| {
+            let item = RenderItemDto::to_dto_with_frame(frame, tile);
+            path_builder_renderer(tile.id.as_str(), item, index, total); 
         });
 
         self.state.resources_renderer(&mut |resources| {
